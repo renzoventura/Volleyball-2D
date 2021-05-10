@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://scenes/Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/environment/Floor.tscn" type="PackedScene" id=2]
 
 [node name="TemplateLevel" type="Node2D"]
 
@@ -9,7 +10,21 @@ position = Vector2( 511, 299 )
 current = true
 zoom = Vector2( 0.5, 0.5 )
 
+[node name="Environment" type="Node" parent="Camera2D"]
+
+[node name="Floor" parent="Camera2D/Environment" instance=ExtResource( 2 )]
+position = Vector2( 512, 496 )
+scale = Vector2( 40, 10 )
+
+[node name="Floor2" parent="Camera2D/Environment" instance=ExtResource( 2 )]
+position = Vector2( 792, 288 )
+scale = Vector2( 5, 20 )
+
+[node name="Floor3" parent="Camera2D/Environment" instance=ExtResource( 2 )]
+position = Vector2( 232, 288 )
+scale = Vector2( 5, 20 )
+
 [node name="Players" type="Node" parent="."]
 
 [node name="Player" parent="Players" instance=ExtResource( 1 )]
-position = Vector2( 511, 299 )
+position = Vector2( 512, 384 )

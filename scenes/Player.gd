@@ -44,14 +44,14 @@ func jump(delta) -> void:
 		#Set amount of jump level
 		motion.y = JUMP_SPEED
 	if is_jumping and Input.is_action_just_released("jump"):
-		print("Released and is jumping")
+#		print("Released and is jumping")
 		if motion.y < -MAX_JUMP:
-			print("short: " + str(motion.y))
+#			print("short: " + str(motion.y))
 			print()
 			motion.y = 0
 		else:
-			print("long: " + str(motion.y))
-		
+			pass
+#			print("long: " + str(motion.y))
 
 func check_if_jumping():
 	if is_jumping and is_on_floor():

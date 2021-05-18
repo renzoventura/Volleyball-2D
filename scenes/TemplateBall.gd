@@ -1,21 +1,28 @@
 extends RigidBody2D
 
-
 const RECEIVE_BOUNCE_UP : int = 300;
 const RECEIVE_BOUNCE_HORIZONTAL : int = -200;
-var RECEIVE_MOTION : Vector2 = Vector2(RECEIVE_BOUNCE_HORIZONTAL,RECEIVE_BOUNCE_UP)
-var motion : Vector2 = Vector2(0,0)
+const RECEIVE_MOTION : Vector2 = Vector2(RECEIVE_BOUNCE_HORIZONTAL,RECEIVE_BOUNCE_UP)
+const motion : Vector2 = Vector2(0,0)
+const INITIAL_SPEED : Vector2 = Vector2(-300,-100)
 
-# Called when the node enters the scene tree for the first time.
-#func _ready():
-#	pass # Replace with function body.
+const INITIAL_SPIN : int = -30
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+onready var TIMER : Timer = $"Timer"
+
+func _ready():
+		apply_central_impulse(INITIAL_SPEED)
+		angular_velocity = INITIAL_SPIN
+
+#func _physics_process(delta):
+#	move()
+#
+func _process(delta):
+	angular_velocity = INITIAL_SPIN
 
 func _on_StaticBody2D_body_entered(body):
 	if (body.name == "Player"):
+		TIMER.start()
 		var direction_away_from_node : Vector2 = get_direction_away_from_body(body)
 		#Negative Y to make it always jump up
 		direction_away_from_node.y = -abs(direction_away_from_node.y)
@@ -24,6 +31,7 @@ func _on_StaticBody2D_body_entered(body):
 		apply_central_impulse(direction_away_from_body_with_speed)
 #		angular_velocity = direction_away_from_body_with_speed.normalized().x * 50
 	elif (body.name == "Floor"):
+		TIMER.start()
 		var direction_away_from_node : Vector2 = get_direction_away_from_body(body)
 		direction_away_from_node.y = -abs(direction_away_from_node.y)
 		var direction_away_from_body_with_speed : Vector2 = direction_away_from_node * RECEIVE_MOTION;
@@ -32,8 +40,7 @@ func _on_StaticBody2D_body_entered(body):
 		apply_central_impulse(direction_away_from_body_with_speed)
 		pass
 		
-func _physics_process(delta):
-	move()
+
 
 func move():
 	if Input.is_action_just_pressed("jump"):
@@ -51,3 +58,7 @@ func get_target(body)->Vector2:
 func get_direction_away_from_body(body)->Vector2:
 	var direction_away_from_body : Vector2 = (get_target(body) - global_position).normalized();
 	return direction_away_from_body;
+
+
+func _on_Timer_timeout():
+	queue_free()

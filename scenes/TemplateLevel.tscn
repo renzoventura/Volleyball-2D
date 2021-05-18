@@ -2,7 +2,7 @@
 
 [ext_resource path="res://scenes/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/environment/Floor.tscn" type="PackedScene" id=2]
-[ext_resource path="res://scenes/TemplateBall.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/BallFeeder.tscn" type="PackedScene" id=4]
 
 [node name="TemplateLevel" type="Node2D"]
 
@@ -30,10 +30,12 @@ scale = Vector2( 5, 50 )
 
 [node name="Ball" type="Node" parent="."]
 
-[node name="Ball" parent="Ball" instance=ExtResource( 3 )]
-position = Vector2( 376, 256 )
-
 [node name="Players" type="Node" parent="."]
 
 [node name="Player" parent="Players" instance=ExtResource( 1 )]
 position = Vector2( 312, 408 )
+
+[node name="BallFeeders" type="Node" parent="."]
+
+[node name="BallFeeder" parent="BallFeeders" instance=ExtResource( 4 )]
+position = Vector2( 880, 496 )

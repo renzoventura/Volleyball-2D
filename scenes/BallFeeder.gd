@@ -13,7 +13,6 @@ func _ready():
 	pass # Replace with function body.
 
 func shoot_ball() -> void:
-	print("shooting!");
 	var ball_instance = BALL.instance()
 	add_child(ball_instance)
 	TIMER.start()

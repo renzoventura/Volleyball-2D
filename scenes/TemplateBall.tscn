@@ -1,7 +1,10 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://assets/env/default_ball.png" type="Texture" id=1]
 [ext_resource path="res://scenes/TemplateBall.gd" type="Script" id=2]
+
+[sub_resource type="PhysicsMaterial" id=3]
+bounce = 20.0
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 8, 8 )
@@ -12,6 +15,7 @@ extents = Vector2( 9.02733, 9.1637 )
 [node name="TemplateBall" type="RigidBody2D"]
 collision_layer = 2
 collision_mask = 7
+physics_material_override = SubResource( 3 )
 can_sleep = false
 script = ExtResource( 2 )
 

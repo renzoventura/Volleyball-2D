@@ -8,9 +8,12 @@ const motion : Vector2 = Vector2(0,0)
 const INITIAL_SPEED : Vector2 = Vector2(-250,-140)
 export var MAX_SPEED = 400.0
 
-const INITIAL_SPIN : int = -30
+const INITIAL_SPIN : int = 0#-30
 
 onready var TIMER : Timer = $"Timer"
+
+var wobble_up_wards : bool = true;
+var is_wobbling = true
 
 func _ready():
 	apply_central_impulse(INITIAL_SPEED)
@@ -19,6 +22,7 @@ func _ready():
 func _process(delta):
 #	angular_velocity = INITIAL_SPIN
 	integrate_forces()
+	apply_wobble()
 	pass
 #	angular_velocity = INITIAL_SPIN
 
@@ -29,6 +33,7 @@ func integrate_forces():
 func _on_StaticBody2D_body_entered(body):
 	pass
 	if (body.name == "Player"):
+		is_wobbling = false
 		TIMER.start()
 		var direction_away_from_node : Vector2 = get_direction_away_from_body(body)
 		#Negative Y to make it always jump up
@@ -38,6 +43,7 @@ func _on_StaticBody2D_body_entered(body):
 		apply_central_impulse(direction_away_from_body_with_speed)
 		angular_velocity = direction_away_from_body_with_speed.normalized().x * RECIEVE_SPIN
 	elif (body.name == "Floor"):
+		is_wobbling = false
 		TIMER.start()
 		var direction_away_from_node : Vector2 = get_direction_away_from_body(body)
 		direction_away_from_node.y = -abs(direction_away_from_node.y)
@@ -66,3 +72,15 @@ func get_direction_away_from_body(body)->Vector2:
 
 func _on_Timer_timeout():
 	queue_free()
+	
+func apply_wobble(): 
+	if(is_wobbling):
+		if(wobble_up_wards):
+			motion.y = -3
+			apply_central_impulse(motion)
+		else: 
+			motion.y = 3
+			apply_central_impulse(motion)
+
+func _on_WoobleTimer_timeout():
+	wobble_up_wards = !wobble_up_wards

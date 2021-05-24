@@ -5,7 +5,8 @@ extends Node2D
 # var a = 2
 # var b = "text"
 onready var TIMER : Timer = $"Timer"
-onready var BALL = preload("res://scenes/TemplateBall.tscn")
+onready var NORMAL_BALL = preload("res://scenes/TemplateBall.tscn")
+onready var FLOATER_BALL = preload("res://scenes/FloaterBall.tscn")
 
 
 # Called when the node enters the scene tree for the first time.
@@ -13,7 +14,8 @@ func _ready():
 	pass # Replace with function body.
 
 func shoot_ball() -> void:
-	var ball_instance = BALL.instance()
+#	var ball_instance = NORMAL_BALL.instance()
+	var ball_instance = FLOATER_BALL.instance()
 	add_child(ball_instance)
 	TIMER.start()
 

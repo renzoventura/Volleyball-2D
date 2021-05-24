@@ -1,5 +1,5 @@
 extends RigidBody2D
-const LIST_OF_INITIAL_SPEEDS : Dictionary = {180:200}
+
 #topspin
 #const LIST_OF_INITIAL_SPINS : Array = [5, 10 ,15]
 #const LIST_OF_GRAVITY_SCALES : Array = [1, 1.5, 2]
@@ -9,10 +9,11 @@ const LIST_OF_INITIAL_SPEEDS : Dictionary = {180:200}
 #const LIST_OF_GRAVITY_SCALES : Array = [1, 1.5, 2]
 
 
-const LIST_OF_GRAVITY_SCALES : Array = [1, 1.2]
+var LIST_OF_GRAVITY_SCALES : Array = [1,]
+var LIST_OF_WOBBLE_LEVELS : Array = [0]
+var LIST_OF_INITIAL_SPINS : Array = [3, 5, 8]
+var LIST_OF_INITIAL_SPEEDS : Dictionary = {180:200}
 
-const LIST_OF_WOBBLE_LEVELS : Array = [0]
-const LIST_OF_INITIAL_SPINS : Array = [3, 5, 8]
 const RECEIVE_BOUNCE_UP : int = 150;
 const RECEIVE_BOUNCE_HORIZONTAL : int = -150;
 const RECEIVE_MOTION : Vector2 = Vector2(RECEIVE_BOUNCE_HORIZONTAL,RECEIVE_BOUNCE_UP)
@@ -28,7 +29,13 @@ var wobble_up_wards : bool = true;
 var is_wobbling = true
 
 func _ready():
+	print("normal")
 	update_gravity_scale()
+	initial_move()
+
+
+func initial_move():
+	print("Moving" + str(get_random(LIST_OF_INITIAL_SPEEDS)))
 	apply_central_impulse(get_random(LIST_OF_INITIAL_SPEEDS))
 
 func _process(delta):

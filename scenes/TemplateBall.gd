@@ -1,18 +1,26 @@
 extends RigidBody2D
-const LIST_OF_INITIAL_SPEEDS : Dictionary = {200:150}
-const LIST_OF_INITIAL_SPINS : Array = [5, 10 ,15]
-const LIST_OF_WOBBLE_LEVELS : Array = [1, 1 , 3, 3, 3, 6, 9]
+const LIST_OF_INITIAL_SPEEDS : Dictionary = {180:200}
+#topspin
+#const LIST_OF_INITIAL_SPINS : Array = [5, 10 ,15]
+#const LIST_OF_GRAVITY_SCALES : Array = [1, 1.5, 2]
 
+#float
+#const LIST_OF_WOBBLE_LEVELS : Array = [2, 2 , 3, 5, 5, 6, 9]
+#const LIST_OF_GRAVITY_SCALES : Array = [1, 1.5, 2]
+
+
+const LIST_OF_GRAVITY_SCALES : Array = [1, 1.2]
+
+const LIST_OF_WOBBLE_LEVELS : Array = [0]
+const LIST_OF_INITIAL_SPINS : Array = [3, 5, 8]
 const RECEIVE_BOUNCE_UP : int = 150;
 const RECEIVE_BOUNCE_HORIZONTAL : int = -150;
 const RECEIVE_MOTION : Vector2 = Vector2(RECEIVE_BOUNCE_HORIZONTAL,RECEIVE_BOUNCE_UP)
 const RECIEVE_SPIN : int = 5;
 const motion : Vector2 = Vector2(0,0)
-var INITIAL_SPEED : Vector2 = Vector2(-180,-200)
+var INITIAL_SPEED : Vector2 = Vector2(-300,-180)
 #const WOBBLE_LEVEL = 0
-export var MAX_SPEED = 400.0
-
-
+export var MAX_SPEED = 800.0
 
 onready var TIMER : Timer = $"Timer"
 
@@ -20,23 +28,24 @@ var wobble_up_wards : bool = true;
 var is_wobbling = true
 
 func _ready():
+	update_gravity_scale()
 	apply_central_impulse(get_random(LIST_OF_INITIAL_SPEEDS))
 
 func _process(delta):
-#	angular_velocity = INITIAL_SPIN
 	integrate_forces()
 	apply_wobble()
 	apply_spin()
-	pass
-#	angular_velocity = INITIAL_SPIN
-
+	
+func update_gravity_scale():
+	set_gravity_scale(LIST_OF_GRAVITY_SCALES[randi() % LIST_OF_GRAVITY_SCALES.size()]) 
+	
 func integrate_forces():
 	if linear_velocity.length() > MAX_SPEED:
 		linear_velocity = linear_velocity.normalized() * MAX_SPEED
 
 func apply_spin():
 	var INITIAL_SPIN : int = LIST_OF_INITIAL_SPINS[randi() % LIST_OF_INITIAL_SPINS.size()]
-#	angular_velocity = -INITIAL_SPIN
+	angular_velocity = -INITIAL_SPIN
 
 func _on_StaticBody2D_body_entered(body):
 	pass
@@ -76,7 +85,6 @@ func get_target(body)->Vector2:
 func get_direction_away_from_body(body)->Vector2:
 	var direction_away_from_body : Vector2 = (get_target(body) - global_position).normalized();
 	return direction_away_from_body;
-
 
 func _on_Timer_timeout():
 	queue_free()
